@@ -1,6 +1,6 @@
 // TODO: set the number of rows and cols in the toggle pane
-const TOGGLE_ROWS = ?;
-const TOGGLE_COLS = ?;
+const TOGGLE_ROWS = 2;
+const TOGGLE_COLS = 3;
 
 // set the pixel size of each tile
 const TILE_HEIGHT = 50;
@@ -14,7 +14,7 @@ let ctx;
 
 // TODO: create an array of strings with the 2 different
 // toggle settings (prefix and whitespace)
-let flags = ?;
+let flags = ['prefix', 'whitespace'];
 
 // array used to store currently selected toggle settings
 let selection = [];
@@ -30,16 +30,18 @@ $(document).ready(() => {
   // TODO: set the width and height of canvas
   // hint -- use the globally defined TOGGLE_ROWS, TOGGLE_COLS,
   //         TILE_HEIGHT, TILE_WIDTH
-  canvas.width = ?;
-  canvas.height = ?;
+  canvas.width = TOGGLE_COLS * TILE_WIDTH;
+  canvas.height = TOGGLE_ROWS * TILE_HEIGHT;
 
   // TODO: set up the canvas context
+  ctx = canvas.getContext("2d");
 
   // paints the toggle pane
   paintToggle();
 
   // TODO: add a click handler for when the user clicks the canvas element
   // with id 'toggle'. Have it call the function 'paintOnClick'.
+  $('#toggle').click(paintOnClick);
 
 
   // click handler for the submit button
@@ -93,12 +95,26 @@ const paintToggle = () => {
 
   // TODO: fill the background color of the canvas element to
   // something other than white using ctx.fillStyle() and ctx.fillRect()
+  ctx.fillStyle = UNCHECKED_COLOR;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 
   // TODO: draw the grid lines for the toggle pane using ctx.beginPath()
   // and ctx.moveTo()
   // hint -- remember you have the fields TOGGLE_ROWS & TOGGLE_COLS, and
   //         TILE_HEIGHT & TILE_WIDTH, which will help you draw the lines
+  //Horozontal Lines
+  for (let row = 0; row < TOGGLE_ROWS + 1; row++){
+    ctx.moveTo(0, row * TILE_HEIGHT)
+    ctx.lineTo(TILE_WIDTH * TOGGLE_COLS, row * TILE_HEIGHT)
+  }
+
+  for (let col = 0; col < TOGGLE_COLS + 1; col++){
+    ctx.moveTo(col * TILE_WIDTH, 0)
+    ctx.lineTo(col * TILE_WIDTH, TILE_HEIGHT * TOGGLE_ROWS)
+  }
+
+  ctx.stroke();
 
 
   // populate the toggle pane's text using ctx.fillText(). Reference
